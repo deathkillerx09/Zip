@@ -1,0 +1,24 @@
+HISTORICAL NOTE (kept for reference): this file described an earlier hot-fix package. The current start/stop instructions are in README.md and FINAL-SETUP.md, and the visible renderer is the isometric town map described there.
+
+AI MONEY TOWN - VISIBLE TOWN FIX
+
+This package includes a playable isometric Canvas renderer that appears over the blank WebGL canvas. It is designed to make the town visible and playable while the underlying Three.js presentation issue is investigated separately.
+
+INSTALL
+1. Stop the currently running town with Ctrl+C in its black terminal window.
+2. Extract this ZIP into a NEW folder.
+3. If you have a newer town database in your current project, BACK IT UP first, then copy your current data\town.db into this new folder's data folder. Do not overwrite the only copy of either database.
+4. Double-click Start AI Money Town.bat.
+5. Open http://127.0.0.1:8000 and hard-refresh with Ctrl+Shift+R.
+
+CONTROLS
+WASD / arrow keys: move relative to the direction the view is facing
+Shift: sprint
+Drag mouse: rotate the isometric view
+Mouse wheel: zoom
+E: talk to a nearby employee
+F: inspect a nearby building
+Esc: close the current interaction
+Click an employee or guild building: interact directly
+
+The visible renderer is an isometric 2.5D fallback, not full Genshin-quality 3D. It displays roads, buildings, trees, a river, employees, and a player avatar, and uses the existing city-state and local Ollama chat APIs. No paid API or cloud account is used.

@@ -1,0 +1,73 @@
+services:
+  web:
+    build: .
+    restart: unless-stopped
+    environment:
+      PORT: "8000"
+      AI_MONEY_TOWN_DB: /app/data/town.db
+      AI_MONEY_TOWN_WORKSPACE: /app/workspace
+      AI_MONEY_TOWN_ALLOW_REMOTE_OLLAMA: "1"
+      AI_MONEY_TOWN_OWNER_TOKEN: ${AI_MONEY_TOWN_OWNER_TOKEN:?Set a long random owner token}
+      AI_MONEY_TOWN_ACCESS_USERNAME: ${AI_MONEY_TOWN_ACCESS_USERNAME:?Set a private site username}
+      AI_MONEY_TOWN_ACCESS_PASSWORD: ${AI_MONEY_TOWN_ACCESS_PASSWORD:?Set a strong private site password}
+      OLLAMA_BASE_URL: http://ollama:11434
+      OLLAMA_TIMEOUT_SECONDS: "100"
+      OLLAMA_CHAT_MODEL: ${OLLAMA_CHAT_MODEL:-qwen3.5:0.8b}
+      OLLAMA_IDEA_MODEL: ${OLLAMA_IDEA_MODEL:-qwen3.5:0.8b}
+      OLLAMA_WORKER_MODEL: ${OLLAMA_WORKER_MODEL:-qwen3.5:0.8b}
+      OLLAMA_MODEL_PRODUCT: ${OLLAMA_MODEL_PRODUCT:-}
+      OLLAMA_MODEL_RESEARCH: ${OLLAMA_MODEL_RESEARCH:-}
+      OLLAMA_MODEL_FINANCE: ${OLLAMA_MODEL_FINANCE:-}
+      OLLAMA_MODEL_QUALITY: ${OLLAMA_MODEL_QUALITY:-}
+      OLLAMA_TASK_TIMEOUT_SECONDS: "180"
+      OLLAMA_NUM_CTX: "1024"
+      OLLAMA_NUM_PREDICT: "96"
+      AI_MONEY_TOWN_SCHEDULER_SECONDS: "30"
+      AI_MONEY_TOWN_SCHEDULER_START_DELAY_SECONDS: "30"
+      AI_MONEY_TOWN_INITIAL_IDEA_DELAY_SECONDS: "90"
+      AI_MONEY_TOWN_IDEA_TARGET_PER_HOUR: "50"
+      AI_MONEY_TOWN_IDEA_BATCH_SIZE: "10"
+      AI_MONEY_TOWN_IDEA_INTERVAL_SECONDS: "720"
+      AI_MONEY_TOWN_TASK_MAX_ATTEMPTS: "3"
+      AI_MONEY_TOWN_TASK_CONCURRENCY: "1"
+      AI_MONEY_TOWN_STALE_TASK_SECONDS: "900"
+      AI_MONEY_TOWN_RATE_LIMIT_PER_MINUTE: "240"
+      AI_MONEY_TOWN_MAX_BODY_BYTES: "2097152"
+    volumes:
+      - town_data:/app/data
+      - workspace_data:/app/workspace
+    expose:
+      - "8000"
+    depends_on:
+      - ollama
+
+  ollama:
+    image: ollama/ollama:latest
+    restart: unless-stopped
+    volumes:
+      - ollama_data:/root/.ollama
+    expose:
+      - "11434"
+
+  caddy:
+    image: caddy:2
+    restart: unless-stopped
+    environment:
+      DOMAIN: ${DOMAIN:?Set a domain pointing to this server}
+    ports:
+      - "80:80"
+      - "443:443"
+      - "443:443/udp"
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy_data:/data
+      - caddy_config:/config
+    depends_on:
+      - web
+
+volumes:
+  town_data:
+  workspace_data:
+  ollama_data:
+  caddy_data:
+  caddy_config:

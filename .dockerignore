@@ -1,0 +1,15 @@
+# Local environments, credentials, caches, and databases never enter an image.
+.venv/
+venv/
+__pycache__/
+.pytest_cache/
+node_modules/
+.git/
+.env
+.env.*
+.owner-token
+data/
+*.sqlite
+*.sqlite3
+*.db
+*.bak

@@ -1,0 +1,15 @@
+.venv/
+node_modules/
+__pycache__/
+.pytest_cache/
+*.py[cod]
+.owner-token
+.env
+.env.*
+!.env.example
+*.log
+!.env.cloud.example
+workspace/products/
+!workspace/products/.gitkeep
+.pytest_cache/
+*.db.prelaunch.bak

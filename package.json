@@ -1,0 +1,13 @@
+{
+  "name": "ai-money-town",
+  "private": true,
+  "scripts": {
+    "build:city": "esbuild frontend/src/city.js --bundle --minify --target=es2020 --outfile=frontend/city.bundle.js"
+  },
+  "dependencies": {
+    "three": "^0.180.0"
+  },
+  "devDependencies": {
+    "esbuild": "^0.25.0"
+  }
+}
